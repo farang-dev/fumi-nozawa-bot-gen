@@ -1,101 +1,182 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState, useEffect, useRef } from 'react';
+import styles from './Chat.module.css';
+
+const App = () => {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const chatEndRef = useRef(null);
+
+  // Initial welcome message with options
+  useEffect(() => {
+    const welcomeMessage = {
+      role: 'assistant',
+      content: `
+        <div class="welcome-text">Welcome! I'm here to share Masafumi Nozawa's background. Please choose an option:</div>
+      `,
+    };
+    setMessages([welcomeMessage]);
+  }, []);
+
+  // Auto-scroll to the bottom of the chat
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isLoading]);
+
+  // Function to format dynamic plain text into HTML
+  const formatResponse = (text) => {
+    let formatted = text.replace(/\n/g, '<br/>');
+    const numberedListRegex = /(\d+\.\s[^\n]+)/g;
+    const numberedItems = formatted.match(numberedListRegex);
+    if (numberedItems) {
+      let listHtml = '<ol>';
+      numberedItems.forEach((item) => {
+        const [, content] = item.match(/\d+\.\s(.*)/);
+        listHtml += `<li>${content}</li>`;
+      });
+      listHtml += '</ol>';
+      formatted = formatted.replace(numberedListRegex, listHtml);
+    }
+    const bulletListRegex = /(-\s[^\n]+)/g;
+    const bulletItems = formatted.match(bulletListRegex);
+    if (bulletItems) {
+      let listHtml = '<ul>';
+      bulletItems.forEach((item) => {
+        const [, content] = item.match(/-\s(.*)/);
+        listHtml += `<li>${content}</li>`;
+      });
+      listHtml += '</ul>';
+      formatted = formatted.replace(bulletListRegex, listHtml);
+    }
+    formatted = formatted.replace(/(\w+?:)/g, '<strong>$1</strong>');
+    return formatted;
+  };
+
+  // Function to call Flowise API with minimum loading time
+  const callFlowiseAPI = async (userInput) => {
+    setIsLoading(true);
+    const startTime = Date.now();
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer G4M70jOew5Js1eSTVqOOAmJY1jFR-nhYgpxZHzmfODM`,
+        },
+        body: JSON.stringify({
+          question: userInput,
+        }),
+      });
+      const data = await response.json();
+      const rawResponse = data.text || data.message || 'Sorry, I couldn’t process that.';
+      
+      // Ensure loading animation is visible for at least 1 second
+      const elapsedTime = Date.now() - startTime;
+      const minLoadingTime = 1000;
+      if (elapsedTime < minLoadingTime) {
+        await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
+      }
+
+      return formatResponse(rawResponse);
+    } catch (error) {
+      console.error('Error calling Flowise API:', error);
+      return 'Error: Failed to get a response.';
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle user input submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    const userMessage = { role: 'user', content: input };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput('');
+
+    const botResponse = await callFlowiseAPI(input);
+    const botMessage = { role: 'assistant', content: botResponse };
+    setMessages((prev) => [...prev, botMessage]);
+  };
+
+  // Handle option click (maps number to query and displays full option text)
+  const handleOptionClick = async (option) => {
+    const options = {
+      '1': { query: 'Who is Masafumi Nozawa?', display: 'Who is Masafumi Nozawa?' },
+      '2': { query: 'What are his services? List his services from 1 - 5', display: 'What are his services?' },
+      '3': { query: 'What is his skillset?', display: 'What is his skillset?' },
+      '4': { query: 'Show his contact information except for github', display: 'His Contact Information' },
+    };
+    const selectedOption = options[option];
+    if (!selectedOption) return;
+
+    const userMessage = { role: 'user', content: selectedOption.display };
+    setMessages((prev) => [...prev, userMessage]);
+
+    const botResponse = await callFlowiseAPI(selectedOption.query);
+    const botMessage = { role: 'assistant', content: botResponse };
+    setMessages((prev) => [...prev, botMessage]);
+  };
+
+  // Function to refresh the page
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className={styles.chatContainer}>
+      <div className={styles.header}>
+        <h1 onClick={handleRefresh} style={{ cursor: 'pointer' }}>Masafumi Nozawa</h1>
+      </div>
+      <div className={styles.chatWindow}>
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={
+              msg.role === 'user'
+                ? styles.userMessage
+                : index === 0
+                ? styles.welcomeMessage
+                : styles.botMessage
+            }
+          >
+            <div className={styles.messageContent} dangerouslySetInnerHTML={{ __html: msg.content }} />
+            {index === 0 && msg.role === 'assistant' && (
+              <div className={styles.options}>
+                <button onClick={() => handleOptionClick('1')}>1. Who is Masafumi Nozawa?</button>
+                <button onClick={() => handleOptionClick('2')}>2. What are his services?</button>
+                <button onClick={() => handleOptionClick('3')}>3. What is his skillset?</button>
+                <button onClick={() => handleOptionClick('4')}>4. His Contact Information</button>
+              </div>
+            )}
+          </div>
+        ))}
+        {isLoading && (
+          <div className={styles.loadingMessage}>
+            <div className={styles.loadingDots}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        )}
+        <div ref={chatEndRef} />
+      </div>
+      <form onSubmit={handleSubmit} className={styles.inputForm}>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type your message..."
+          className={styles.input}
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <button type="submit" className={styles.sendButton}>Send</button>
+      </form>
     </div>
   );
-}
+};
+
+export default App;
