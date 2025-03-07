@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main  # Change this if you're using a different branch
+  workflow_dispatch:  # Allows manual triggering from GitHub UI
+
+permissions:
+  contents: write  # Required for deploying to GitHub Pages
 
 jobs:
   build:
@@ -35,3 +39,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
+          publish_branch: gh-pages  # Ensure you're deploying to the correct branch
