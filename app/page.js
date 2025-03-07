@@ -59,6 +59,11 @@ const App = () => {
     setIsLoading(true);
     const startTime = Date.now();
     try {
+      if (!process.env.NEXT_PUBLIC_API_URL) {
+        console.error('NEXT_PUBLIC_API_URL is undefined');
+        throw new Error('API URL is not configured');
+      }
+      console.log('Fetching API with URL:', process.env.NEXT_PUBLIC_API_URL); // Debug log
       const response = await fetch(process.env.NEXT_PUBLIC_API_URL, {
         method: 'POST',
         headers: {
@@ -68,10 +73,13 @@ const App = () => {
           question: userInput,
         }),
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
+      console.log('API Response:', data); // Debug log
       const rawResponse = data.text || data.message || 'Sorry, I couldn’t process that.';
       
-      // Ensure loading animation is visible for at least 1 second
       const elapsedTime = Date.now() - startTime;
       const minLoadingTime = 1000;
       if (elapsedTime < minLoadingTime) {
@@ -80,7 +88,7 @@ const App = () => {
 
       return formatResponse(rawResponse);
     } catch (error) {
-      console.error('Error calling Flowise API:', error);
+      console.error('Error calling Flowise API:', error.message, error.stack);
       return 'Error: Failed to get a response.';
     } finally {
       setIsLoading(false);

@@ -1,7 +1,7 @@
 {
   "name": "fumi-nozawa-bot-gen",
   "version": "0.1.0",
-  "homepage": "https://fuminozawa.github.io/fumi-nozawa-bot-gen",
+  "homepage": "homepage": "https://farang-dev.github.io/fumi-nozawa-bot-gen",
   "private": true,
   "scripts": {
     "dev": "next dev",
