@@ -22,6 +22,8 @@ jobs:
 
       - name: Build and Export
         run: |
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"
+          echo "NEXT_PUBLIC_FLOWISE_API_KEY=${{ secrets.NEXT_PUBLIC_FLOWISE_API_KEY }}"
           npm run build
           npm run export
         env:
