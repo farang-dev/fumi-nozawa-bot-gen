@@ -8,7 +8,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS'], // Explicitly allow POST
 }));
 
-app.post('/api/v1/prediction/:id', (req, res) => {
+app.post('/api/v1/prediction', (req, res) => {
   const { question } = req.body;
   // Example response (replace with Flowise logic)
   res.json({ text: `Response to: ${question}` });
