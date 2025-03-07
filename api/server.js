@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: 'https://<your-username>.github.io', // Replace with your GitHub Pages URL
+  origin: 'https://farang-dev.github.io/fumi-nozawa-bot-gen/', // Replace with your GitHub Pages URL
 }));
 
 app.post('/api/v1/prediction/:id', (req, res) => {
