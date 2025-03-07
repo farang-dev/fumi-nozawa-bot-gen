@@ -1,0 +1,23 @@
+# Deployment Troubleshooting - Render and GitHub Pages
+
+## Problem:
+
+The application is not working correctly in the production environment (GitHub Pages for frontend, Render for backend). The most likely cause is incorrect environment variable configuration on Render.
+
+## Solution:
+
+1.  **Verify Render Environment Variables:**
+    *   Go to your Render dashboard.
+    *   Navigate to your backend service (the one running your `api/server.js` file).
+    *   Go to the "Environment" section.
+    *   **Make sure that `FLOWISE_API_KEY` is set to the correct value (G4M70jOew5Js1eSTVqOOAmJY1jFR-nhYgpxZHzmfODM).**
+    *   **Make sure that `PORT` is set to 3005.**
+2.  **Verify Frontend API URL:**
+    *   Go to your Render dashboard.
+    *   Find the URL of your backend service. It should be something like `fumi-nozawa-bot-gen.onrender.com`.
+    *   **In your Render environment variables, make sure that `NEXT_PUBLIC_API_URL` is set to the correct URL, which should be `https://fumi-nozawa-bot-gen.onrender.com/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec`.**
+
+## Important Considerations:
+
+*   **Case Sensitivity:** Environment variable names are often case-sensitive. Double-check that the names in your Render configuration exactly match the names used in your code (`NEXT_PUBLIC_API_URL`, `FLOWISE_API_KEY`, and `PORT`).
+*   **Restart Render Service:** After updating the environment variables in Render, you might need to restart your backend service for the changes to take effect.

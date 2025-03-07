@@ -24,6 +24,9 @@ jobs:
         run: |
           npm run build
           npm run export
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          FLOWISE_API_KEY: ${{ secrets.FLOWISE_API_KEY }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

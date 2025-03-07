@@ -64,11 +64,11 @@ const App = () => {
         throw new Error('API URL is not configured');
       }
       console.log('Fetching API with URL:', process.env.NEXT_PUBLIC_API_URL); // Debug log
-      const response = await fetch(process.env.NEXT_PUBLIC_API_URL, {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URL.replace(/\/api\/v1\/prediction\/[a-zA-Z0-9-]+/, '/api/v1/prediction'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.FLOWISE_API_KEY || ''}`, // Add API key if available
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_FLOWISE_API_KEY || ''}`, // Add API key if available
         },
         body: JSON.stringify({
           question: userInput,
