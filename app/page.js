@@ -68,6 +68,7 @@ const App = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.FLOWISE_API_KEY || ''}`, // Add API key if available
         },
         body: JSON.stringify({
           question: userInput,
