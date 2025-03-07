@@ -59,7 +59,7 @@ const App = () => {
     setIsLoading(true);
     const startTime = Date.now();
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL, {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
