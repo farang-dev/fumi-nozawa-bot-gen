@@ -14,7 +14,7 @@ app.post('/api/v1/prediction/:id', (req, res) => {
   res.json({ text: 'Response from Flowise API' });
 });
 
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
