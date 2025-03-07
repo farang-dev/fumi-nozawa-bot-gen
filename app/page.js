@@ -59,11 +59,10 @@ const App = () => {
     setIsLoading(true);
     const startTime = Date.now();
     try {
-      const response = await fetch('http://localhost:3000/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec', {
+      const response = await fetch(process.env.REACT_APP_API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer G4M70jOew5Js1eSTVqOOAmJY1jFR-nhYgpxZHzmfODM`,
         },
         body: JSON.stringify({
           question: userInput,
