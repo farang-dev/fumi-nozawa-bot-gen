@@ -1,13 +1,16 @@
 {
-    "name": "flowise-api",
-    "version": "1.0.0",
-    "main": "server.js",
+    "name": "fumi-nozawa-bot-gen",
+    "version": "0.1.0",
+    "private": true,
     "scripts": {
-      "start": "node server.js"
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "export": "next export -o out" 
     },
     "dependencies": {
-      "express": "^4.18.2",
-      "cors": "^2.8.5",
-      "axios": "^1.6.0"
+      "next": "^15.2.1",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0"
     }
-}
+  }
