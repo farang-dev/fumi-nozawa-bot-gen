@@ -59,12 +59,10 @@ const App = () => {
     setIsLoading(true);
     const startTime = Date.now();
     try {
-      if (!process.env.NEXT_PUBLIC_API_URL) {
-        console.error('NEXT_PUBLIC_API_URL is undefined');
-        throw new Error('API URL is not configured');
-      }
-      console.log('Fetching API with URL:', process.env.NEXT_PUBLIC_API_URL); // Debug log
-      const response = await fetch(process.env.NEXT_PUBLIC_API_URL.replace(/\/api\/v1\/prediction\/[a-zA-Z0-9-]+/, '/api/v1/prediction'), {
+      const proxyUrl = 'https://flowise-proxy-254616312251.us-east1.run.app/'; // Directly using the proxy URL
+  
+      console.log('Fetching API with URL:', proxyUrl); // Debug log
+      const response = await fetch(proxyUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,19 +72,21 @@ const App = () => {
           question: userInput,
         }),
       });
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+  
       const data = await response.json();
       console.log('API Response:', data); // Debug log
       const rawResponse = data.text || data.message || 'Sorry, I couldn’t process that.';
-      
+  
       const elapsedTime = Date.now() - startTime;
       const minLoadingTime = 1000;
       if (elapsedTime < minLoadingTime) {
         await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
       }
-
+  
       return formatResponse(rawResponse);
     } catch (error) {
       console.error('Error calling Flowise API:', error.message, error.stack);
@@ -95,6 +95,7 @@ const App = () => {
       setIsLoading(false);
     }
   };
+  
 
   // Handle user input submission
   const handleSubmit = async (e) => {
