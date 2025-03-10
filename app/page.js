@@ -71,21 +71,21 @@ const App = () => {
           question: userInput,
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+  
       const data = await response.json();
       console.log('API Response:', data); // Debug log
       const rawResponse = data.text || data.message || 'Sorry, I couldn’t process that.';
-
+  
       const elapsedTime = Date.now() - startTime;
       const minLoadingTime = 1000;
       if (elapsedTime < minLoadingTime) {
         await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
       }
-
+  
       return formatResponse(rawResponse);
     } catch (error) {
       console.error('Error calling Flowise API:', error.message, error.stack);
