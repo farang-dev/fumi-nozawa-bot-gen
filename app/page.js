@@ -59,14 +59,14 @@ const App = () => {
     setIsLoading(true);
     const startTime = Date.now();
     try {
-      const proxyUrl = 'https://flowise-proxy-254616312251.us-east1.run.app/'; // Directly using the proxy URL
+      const proxyUrl = 'https://flowise-688733622589.us-east1.run.app/api/v1/prediction/'; // Updated API endpoint
   
       console.log('Fetching API with URL:', proxyUrl); // Debug log
       const response = await fetch(proxyUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_FLOWISE_API_KEY || ''}`, // Add API key if available
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_FLOWISE_API_KEY || ''}`, // Ensure your API key is correctly set
         },
         body: JSON.stringify({
           question: userInput,
@@ -90,11 +90,11 @@ const App = () => {
       return formatResponse(rawResponse);
     } catch (error) {
       console.error('Error calling Flowise API:', error.message, error.stack);
-      return 'Error: Failed to get a response.';
+      return 'Error: Failed to get a response.'; // Show user-friendly error message
     } finally {
       setIsLoading(false);
     }
-  };
+  };  
   
 
   // Handle user input submission
