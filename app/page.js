@@ -59,9 +59,8 @@ const App = () => {
     setIsLoading(true);
     const startTime = Date.now();
     try {
-      const proxyUrl = 'https://flowise-688733622589.us-east1.run.app/api/v1/prediction/'; // Updated API endpoint
+      const proxyUrl = process.env.NEXT_PUBLIC_API_URL;  // Fetch the base URL from environment variables
       console.log('Fetching API with URL:', proxyUrl); // Debug log
-
       const response = await fetch(proxyUrl, {
         method: 'POST',
         headers: {
