@@ -7,7 +7,6 @@ const App = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(''); // Added error state
   const chatEndRef = useRef(null);
 
   // Initial welcome message with options
@@ -58,17 +57,16 @@ const App = () => {
   // Function to call Flowise API with minimum loading time
   const callFlowiseAPI = async (userInput) => {
     setIsLoading(true);
-    setError(''); // Reset error message on each new API call
     const startTime = Date.now();
     try {
-      const proxyUrl = 'https://flowise-688733622589.us-east1.run.app/api/v1/prediction/';
+      const proxyUrl = 'https://flowise-688733622589.us-east1.run.app/api/v1/prediction/'; // Updated API endpoint
       console.log('Fetching API with URL:', proxyUrl); // Debug log
 
       const response = await fetch(proxyUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_FLOWISE_API_KEY || ''}`,
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_FLOWISE_API_KEY || ''}`, // Ensure your API key is correctly set
         },
         body: JSON.stringify({
           question: userInput,
@@ -92,8 +90,7 @@ const App = () => {
       return formatResponse(rawResponse);
     } catch (error) {
       console.error('Error calling Flowise API:', error.message, error.stack);
-      setError('Sorry, there was an error processing your request. Please try again later.');
-      return ''; // Return an empty response for error handling
+      return 'Error: Failed to get a response.'; // Show user-friendly error message
     } finally {
       setIsLoading(false);
     }
@@ -109,10 +106,8 @@ const App = () => {
     setInput('');
 
     const botResponse = await callFlowiseAPI(input);
-    if (botResponse) {
-      const botMessage = { role: 'assistant', content: botResponse };
-      setMessages((prev) => [...prev, botMessage]);
-    }
+    const botMessage = { role: 'assistant', content: botResponse };
+    setMessages((prev) => [...prev, botMessage]);
   };
 
   // Handle option click (maps number to query and displays full option text)
@@ -176,7 +171,6 @@ const App = () => {
             </div>
           </div>
         )}
-        {error && <div className={styles.errorMessage}>{error}</div>} {/* Display error message */}
         <div ref={chatEndRef} />
       </div>
       <form onSubmit={handleSubmit} className={styles.inputForm}>
