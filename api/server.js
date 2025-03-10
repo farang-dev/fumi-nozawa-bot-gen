@@ -7,6 +7,7 @@ app.use(express.json());
 app.use(cors({
   origin: 'https://farang-dev.github.io',
   methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.post('/api/v1/prediction/:id', async (req, res) => {
@@ -15,7 +16,7 @@ app.post('/api/v1/prediction/:id', async (req, res) => {
 
   try {
     const flowiseResponse = await axios.post(
-      'https://flowise-688733622589.us-east1.run.app/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec', // Replace with actual Flowise URL and ID
+      'https://flowise-688733622589.us-east1.run.app/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec',
       { question },
       {
         headers: {

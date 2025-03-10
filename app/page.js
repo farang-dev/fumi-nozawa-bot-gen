@@ -13,9 +13,7 @@ const App = () => {
   useEffect(() => {
     const welcomeMessage = {
       role: 'assistant',
-      content: `
-        <div class="welcome-text">Welcome! I'm here to share Masafumi Nozawa's background. Please choose an option:</div>
-      `,
+      content: 'Welcome! I\'m here to share Masafumi Nozawa\'s background. Please choose an option:',
     };
     setMessages([welcomeMessage]);
   }, []);
@@ -25,71 +23,41 @@ const App = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Function to format dynamic plain text into HTML
-  const formatResponse = (text) => {
-    let formatted = text.replace(/\n/g, '<br/>');
-    const numberedListRegex = /(\d+\.\s[^\n]+)/g;
-    const numberedItems = formatted.match(numberedListRegex);
-    if (numberedItems) {
-      let listHtml = '<ol>';
-      numberedItems.forEach((item) => {
-        const [, content] = item.match(/\d+\.\s(.*)/);
-        listHtml += `<li>${content}</li>`;
-      });
-      listHtml += '</ol>';
-      formatted = formatted.replace(numberedListRegex, listHtml);
-    }
-    const bulletListRegex = /(-\s[^\n]+)/g;
-    const bulletItems = formatted.match(bulletListRegex);
-    if (bulletItems) {
-      let listHtml = '<ul>';
-      bulletItems.forEach((item) => {
-        const [, content] = item.match(/-\s(.*)/);
-        listHtml += `<li>${content}</li>`;
-      });
-      listHtml += '</ul>';
-      formatted = formatted.replace(bulletListRegex, listHtml);
-    }
-    formatted = formatted.replace(/(\w+?:)/g, '<strong>$1</strong>');
-    return formatted;
-  };
-
   // Function to call Flowise API with minimum loading time
   const callFlowiseAPI = async (userInput) => {
     setIsLoading(true);
     const startTime = Date.now();
     try {
-      const proxyUrl = process.env.NEXT_PUBLIC_API_URL;  // Fetch the base URL from environment variables
+      const proxyUrl = process.env.NEXT_PUBLIC_API_URL; // Fetch the base URL from environment variables
       console.log('Fetching API with URL:', proxyUrl); // Debug log
+
       const response = await fetch(proxyUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_FLOWISE_API_KEY || ''}`, // Ensure your API key is correctly set
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_FLOWISE_API_KEY || ''}`,
         },
-        body: JSON.stringify({
-          question: userInput,
-        }),
+        body: JSON.stringify({ question: userInput }),
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
+
       const data = await response.json();
       console.log('API Response:', data); // Debug log
       const rawResponse = data.text || data.message || 'Sorry, I couldn’t process that.';
-  
+
       const elapsedTime = Date.now() - startTime;
       const minLoadingTime = 1000;
       if (elapsedTime < minLoadingTime) {
-        await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
+        await new Promise((resolve) => setTimeout(resolve, minLoadingTime - elapsedTime));
       }
-  
-      return formatResponse(rawResponse);
+
+      return rawResponse;
     } catch (error) {
       console.error('Error calling Flowise API:', error.message, error.stack);
-      return 'Error: Failed to get a response.'; // Show user-friendly error message
+      return 'Error: Failed to get a response.';
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +66,7 @@ const App = () => {
   // Handle user input submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
     const userMessage = { role: 'user', content: input };
     setMessages((prev) => [...prev, userMessage]);
@@ -109,7 +77,7 @@ const App = () => {
     setMessages((prev) => [...prev, botMessage]);
   };
 
-  // Handle option click (maps number to query and displays full option text)
+  // Handle option click
   const handleOptionClick = async (option) => {
     const options = {
       '1': { query: 'Who is Masafumi Nozawa?', display: 'Who is Masafumi Nozawa?' },
@@ -150,7 +118,7 @@ const App = () => {
                 : styles.botMessage
             }
           >
-            <div className={styles.messageContent} dangerouslySetInnerHTML={{ __html: msg.content }} />
+            <div className={styles.messageContent}>{msg.content}</div>
             {index === 0 && msg.role === 'assistant' && (
               <div className={styles.options}>
                 <button onClick={() => handleOptionClick('1')}>1. Who is Masafumi Nozawa?</button>
@@ -179,8 +147,11 @@ const App = () => {
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message..."
           className={styles.input}
+          disabled={isLoading}
         />
-        <button type="submit" className={styles.sendButton}>Send</button>
+        <button type="submit" className={styles.sendButton} disabled={isLoading}>
+          Send
+        </button>
       </form>
     </div>
   );
