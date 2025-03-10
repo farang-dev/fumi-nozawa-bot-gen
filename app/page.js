@@ -1,5 +1,4 @@
-'use client';
-
+'use client'; // Marks this as a Client Component in Next.js 13+
 import { useState, useEffect, useRef } from 'react';
 import styles from './Chat.module.css';
 
@@ -9,7 +8,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const chatEndRef = useRef(null);
 
-  // Initial welcome message with options
   useEffect(() => {
     const welcomeMessage = {
       role: 'assistant',
@@ -18,24 +16,25 @@ const App = () => {
     setMessages([welcomeMessage]);
   }, []);
 
-  // Auto-scroll to the bottom of the chat
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Function to call Flowise API with minimum loading time
   const callFlowiseAPI = async (userInput) => {
     setIsLoading(true);
     const startTime = Date.now();
     try {
-      const proxyUrl = process.env.NEXT_PUBLIC_API_URL; // Fetch the base URL from environment variables
-      console.log('Fetching API with URL:', proxyUrl); // Debug log
+      const proxyUrl = process.env.NEXT_PUBLIC_API_URL;
+      const apiKey = process.env.NEXT_PUBLIC_FLOWISE_API_KEY;
+
+      console.log('Proxy URL:', proxyUrl); // Debug log
+      console.log('API Key:', apiKey); // Debug log (avoid in production)
 
       const response = await fetch(proxyUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_FLOWISE_API_KEY || ''}`,
+          'Authorization': `Bearer ${apiKey}`,
         },
         body: JSON.stringify({ question: userInput }),
       });
@@ -45,7 +44,6 @@ const App = () => {
       }
 
       const data = await response.json();
-      console.log('API Response:', data); // Debug log
       const rawResponse = data.text || data.message || 'Sorry, I couldn’t process that.';
 
       const elapsedTime = Date.now() - startTime;
@@ -63,7 +61,6 @@ const App = () => {
     }
   };
 
-  // Handle user input submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
@@ -77,7 +74,6 @@ const App = () => {
     setMessages((prev) => [...prev, botMessage]);
   };
 
-  // Handle option click
   const handleOptionClick = async (option) => {
     const options = {
       '1': { query: 'Who is Masafumi Nozawa?', display: 'Who is Masafumi Nozawa?' },
@@ -96,7 +92,6 @@ const App = () => {
     setMessages((prev) => [...prev, botMessage]);
   };
 
-  // Function to refresh the page
   const handleRefresh = () => {
     window.location.reload();
   };
