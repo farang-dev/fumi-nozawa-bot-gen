@@ -15,7 +15,7 @@ app.post('/api/v1/prediction/:id', async (req, res) => {
 
   try {
     const flowiseResponse = await axios.post(
-      'https://flowise-kjea.onrender.com/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec', // Replace with actual Flowise URL and ID
+      'https://flowise-688733622589.us-east1.run.app/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec', // Replace with actual Flowise URL and ID
       { question },
       {
         headers: {
