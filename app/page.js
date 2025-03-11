@@ -58,44 +58,56 @@ const App = () => {
   const callFlowiseAPI = async (userInput) => {
     setIsLoading(true);
     const startTime = Date.now();
+    
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_API_URL.replace(
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(
         /\/api\/v1\/prediction\/[a-zA-Z0-9-]+/,
-        '/api/v1/prediction'), 
-      {
+        '/api/v1/prediction'
+      );
+  
+      if (!apiUrl) {
+        throw new Error('API URL is not defined.');
+      }
+  
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_FLOWISE_API_KEY || ''}`,
         },
-        body: JSON.stringify({
-          question: userInput,
-        }),
+        body: JSON.stringify({ question: userInput }),
       });
   
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const textResponse = await response.text(); // Read raw response
+      console.log('Raw API Response:', textResponse); // Debugging output
+  
+      // Handle non-JSON responses
+      try {
+        const data = JSON.parse(textResponse);
+        if (!response.ok) {
+          throw new Error(`HTTP error ${response.status}: ${data.message || 'Unknown error'}`);
+        }
+  
+        const rawResponse = data.text || data.message || 'Sorry, I couldn’t process that.';
+        const elapsedTime = Date.now() - startTime;
+        const minLoadingTime = 1000;
+  
+        if (elapsedTime < minLoadingTime) {
+          await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
+        }
+  
+        return formatResponse(rawResponse);
+      } catch (jsonError) {
+        throw new Error('Received non-JSON response from API.');
       }
-  
-      const data = await response.json();
-      console.log('API Response:', data); // Debug log
-      const rawResponse = data.text || data.message || 'Sorry, I couldn’t process that.';
-  
-      const elapsedTime = Date.now() - startTime;
-      const minLoadingTime = 1000;
-      if (elapsedTime < minLoadingTime) {
-        await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
-      }
-  
-      return formatResponse(rawResponse);
     } catch (error) {
-      console.error('Error calling Flowise API:', error.message, error.stack);
-      return 'Error: Failed to get a response.';
+      console.error('Error calling Flowise API:', error.message);
+      return 'Error: Failed to get a valid response.';
     } finally {
       setIsLoading(false);
     }
   };
-
+  
   // Handle user input submission
   const handleSubmit = async (e) => {
     e.preventDefault();
