@@ -60,7 +60,7 @@ const App = () => {
     const startTime = Date.now();
     try {
       const response = await fetch(process.env.NEXT_PUBLIC_API_URL.replace(
-        /\/api\/v1\/prediction\/[a-zA-Z0-9-]+/, 
+        /\/api\/v1\/prediction\/[a-zA-Z0-9-]+/,
         '/api/v1/prediction'), 
       {
         method: 'POST',
@@ -95,7 +95,7 @@ const App = () => {
       setIsLoading(false);
     }
   };
-  
+
   // Handle user input submission
   const handleSubmit = async (e) => {
     e.preventDefault();
