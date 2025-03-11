@@ -1,0 +1,17 @@
+{
+    "rewrites": [
+      {
+        "source": "/api/v1/prediction/:id",
+        "destination": "/api/server.js"
+      },
+      {
+        "source": "/(.*)",
+        "destination": "/app/page.js"
+      }
+    ],
+    "functions": {
+      "api/server.js": {
+        "runtime": "nodejs18.x"
+      }
+    }
+  }
