@@ -55,11 +55,11 @@ const App = () => {
   const callFlowiseAPI = async (userInput) => {
     setIsLoading(true);
     const startTime = Date.now();
-
+  
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://fumi-nozawa-bot-gen.vercel.app/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec';
       console.log('Calling API at:', apiUrl);
-
+  
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -67,29 +67,29 @@ const App = () => {
         },
         body: JSON.stringify({ question: userInput }),
       });
-
+  
       const textResponse = await response.text();
       console.log('Raw API Response:', textResponse);
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error ${response.status}: ${textResponse || 'Unknown error'}`);
       }
-
+  
       let data;
       try {
         data = JSON.parse(textResponse);
       } catch {
         throw new Error(`Non-JSON response: ${textResponse.slice(0, 100)}...`);
       }
-
+  
       const rawResponse = data.text || data.message || 'Sorry, I couldn’t process that.';
       const elapsedTime = Date.now() - startTime;
       const minLoadingTime = 1000;
-
+  
       if (elapsedTime < minLoadingTime) {
         await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
       }
-
+  
       return formatResponse(rawResponse);
     } catch (error) {
       console.error('Error calling Flowise API:', error.message);
