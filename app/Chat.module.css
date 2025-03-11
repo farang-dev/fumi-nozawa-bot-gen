@@ -1,16 +1,22 @@
+/* pages/Chat.module.css */
 .chatContainer {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100vh; /* Full viewport height */
     width: 100%;
     background-color: #ffffff;
     font-family: 'Segoe UI', Roboto, sans-serif;
   }
   
   .header {
+    position: fixed; /* Stick to top */
+    top: 0;
+    left: 0;
+    right: 0;
     background-color: #ffffff;
     padding: 10px 20px;
     border-bottom: 1px solid #d1d1d1;
+    z-index: 10; /* Above chat */
   }
   
   .header h1 {
@@ -20,9 +26,9 @@
   }
   
   .chatWindow {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
+    flex: 1; /* Fills space between header and input */
+    overflow-y: auto; /* Scrollable */
+    padding: 60px 20px 70px; /* Space for fixed header and input */
     background-color: #fafafa;
     color: #000000;
   }
@@ -146,10 +152,15 @@
   }
   
   .inputForm {
+    position: fixed; /* Stick to bottom */
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: flex;
     padding: 10px;
     background-color: #ffffff;
     border-top: 1px solid #d1d1d1;
+    z-index: 10; /* Above chat */
   }
   
   .input {
@@ -201,8 +212,8 @@
   
   .loadingDots span {
     display: inline-block;
-    width: 4px; /* Reduced from 8px to 6px */
-    height: 4px; /* Reduced from 8px to 6px */
+    width: 4px;
+    height: 4px;
     background-color: #000000;
     border-radius: 50%;
     animation: bounce 1.2s infinite;
@@ -228,7 +239,7 @@
   /* Mobile responsiveness */
   @media (max-width: 768px) {
     .chatWindow {
-      padding: 10px;
+      padding: 60px 10px 70px; /* Adjust padding for mobile */
     }
   
     .welcomeMessage {

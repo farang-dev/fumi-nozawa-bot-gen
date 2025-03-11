@@ -10,7 +10,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const chatEndRef = useRef(null);
 
-  // Initial welcome message with options
   useEffect(() => {
     const welcomeMessage = {
       role: 'assistant',
@@ -21,12 +20,10 @@ const App = () => {
     setMessages([welcomeMessage]);
   }, []);
 
-  // Auto-scroll to the bottom of the chat
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Function to format dynamic plain text into HTML
   const formatResponse = (text) => {
     let formatted = text.replace(/\n/g, '<br/>');
     const numberedListRegex = /(\d+\.\s[^\n]+)/g;
@@ -40,7 +37,7 @@ const App = () => {
       listHtml += '</ol>';
       formatted = formatted.replace(numberedListRegex, listHtml);
     }
-    const bulletListRegex = /(-\s[^\n]+)/g;
+    const bulletListRegex = /(-\s[^\n]+)/g);
     const bulletItems = formatted.match(bulletListRegex);
     if (bulletItems) {
       let listHtml = '<ul>';
@@ -55,13 +52,12 @@ const App = () => {
     return formatted;
   };
 
-  // Function to call Flowise API with minimum loading time
   const callFlowiseAPI = async (userInput) => {
     setIsLoading(true);
     const startTime = Date.now();
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL; // Should be full working URL
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       if (!apiUrl) {
         throw new Error('API URL is not defined.');
       }
@@ -107,7 +103,6 @@ const App = () => {
     }
   };
 
-  // Handle user input submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -121,7 +116,6 @@ const App = () => {
     setMessages((prev) => [...prev, botMessage]);
   };
 
-  // Handle option click (maps number to query and displays full option text)
   const handleOptionClick = async (option) => {
     const options = {
       '1': { query: 'Who is Masafumi Nozawa?', display: 'Who is Masafumi Nozawa?' },
@@ -140,7 +134,6 @@ const App = () => {
     setMessages((prev) => [...prev, botMessage]);
   };
 
-  // Function to refresh the page
   const handleRefresh = () => {
     window.location.reload();
   };
@@ -148,7 +141,7 @@ const App = () => {
   return (
     <div className={styles.chatContainer}>
       <div className={styles.header}>
-        <h1 onClick={handleRefresh} style={{ cursor: 'pointer' }}>Masafumi Nozawa</h1>
+        <h1 onClick={handleRefresh}>Masafumi Nozawa</h1>
       </div>
       <div className={styles.chatWindow}>
         {messages.map((msg, index) => (
