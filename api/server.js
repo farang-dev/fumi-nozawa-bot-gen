@@ -1,21 +1,28 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+require('dotenv').config();
+
 const app = express();
 
-app.use(express.json());
+// Allow both your Vercel app and GitHub Pages
+const allowedOrigins = [
+  'https://farang-dev.github.io',
+  'https://fumi-nozawa-bot-gen.vercel.app',
+];
 
-// Allow both frontend origins
+app.use(express.json());
 app.use(cors({
-  origin: ['https://farang-dev.github.io', 'https://fumi-nozawa-bot-gen.vercel.app'],
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
+// Proxy request to Flowise API
 app.post('/api/v1/prediction/:id', async (req, res) => {
   const { question } = req.body;
   const apiKey = process.env.FLOWISE_API_KEY;
-  const flowiseUrl = process.env.FLOWISE_API_URL || 'https://flowise-688733622589.us-east1.run.app/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec';
+  const flowiseUrl = process.env.FLOWISE_API_URL || `https://flowise-688733622589.us-east1.run.app/api/v1/prediction/${req.params.id}`;
 
   try {
     const flowiseResponse = await axios.post(
@@ -35,11 +42,13 @@ app.post('/api/v1/prediction/:id', async (req, res) => {
   }
 });
 
+// Root route for health check
 app.get('/', (req, res) => {
   res.json({ message: 'API is running, proxying to Flowise' });
 });
 
-const PORT = process.env.PORT || 10000;
+// Use Cloud Run's provided port or default to 8080
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
