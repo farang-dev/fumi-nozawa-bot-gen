@@ -57,17 +57,13 @@ const App = () => {
     const startTime = Date.now();
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      if (!apiUrl) {
-        throw new Error('API URL is not defined.');
-      }
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://fumi-nozawa-bot-gen.vercel.app/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec';
       console.log('Calling API at:', apiUrl);
 
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_FLOWISE_API_KEY || ''}`,
         },
         body: JSON.stringify({ question: userInput }),
       });

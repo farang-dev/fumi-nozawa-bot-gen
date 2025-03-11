@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# .gitignore
+.env              # Ignore root .env (React frontend)
+api/.env          # Ignore API .env (Flowise backend)
