@@ -1,10 +1,41 @@
-/** @type {import('next').NextConfig} */
+// next.config.mjs
+const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
+
 const nextConfig = {
-    output: 'export', // Generates static site in the `out` folder
-    basePath: '/fumi-nozawa-bot-gen', // Matches GitHub Pages subpath
+    reactStrictMode: true,
+    output: 'export',
+    basePath: isGitHubActions ? '/fumi-nozawa-bot-gen' : '',
     images: {
-      unoptimized: true, // Required for static export on GitHub Pages
+        unoptimized: true,
+    },
+    output: 'export',
+    basePath: isGitHubActions ? '/fumi-nozawa-bot-gen' : '',
+    images: {
+        unoptimized: true,
+    },
+  };
+=======
+    },
+  };
+=======
+  };
+=======
+  };
+=======
+    output: 'export',
+    basePath: '/fumi-nozawa-bot-gen',
+    images: {
+        unoptimized: true,
+    },
+  };
+=======
+const nextConfig = {
+    reactStrictMode: true,
+    output: 'export',
+    basePath: '/fumi-nozawa-bot-gen',
+    images: {
+        unoptimized: true,
     },
   };
   
-  export default nextConfig;
+  export default nextConfig; // Use 'export default' instead of 'module.exports'

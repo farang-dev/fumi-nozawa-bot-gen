@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/fumi-nozawa-bot-gen/nextjs-frontend', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/fumi-nozawa-bot-gen/nextjs-frontend']
+artifacts:
+  images: ['gcr.io/fumi-nozawa-bot-gen/nextjs-frontend']
