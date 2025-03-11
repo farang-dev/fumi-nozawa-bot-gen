@@ -4,8 +4,10 @@ const axios = require('axios');
 const app = express();
 
 app.use(express.json());
+
+// Allow both frontend origins
 app.use(cors({
-  origin: 'https://farang-dev.github.io', // Your GitHub Pages URL
+  origin: ['https://farang-dev.github.io', 'https://fumi-nozawa-bot-gen.vercel.app'],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -21,7 +23,7 @@ app.post('/api/v1/prediction/:id', async (req, res) => {
       { question },
       {
         headers: {
-          'Authorization': `Bearer ${apiKey}`, // Fixed syntax with template literals
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
       }
