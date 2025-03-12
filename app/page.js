@@ -37,7 +37,7 @@ const App = () => {
       listHtml += '</ol>';
       formatted = formatted.replace(numberedListRegex, listHtml);
     }
-    const bulletListRegex = /(-\s[^\n]+)/g);
+    const bulletListRegex = /(-\s[^\n]+)/g;
     const bulletItems = formatted.match(bulletListRegex);
     if (bulletItems) {
       let listHtml = '<ul>';
