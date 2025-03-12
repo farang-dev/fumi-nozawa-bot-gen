@@ -98,21 +98,23 @@ const App = () => {
       setIsLoading(false);
     }
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Handling submit with input:', input);
     if (!input.trim()) return;
-
+  
     const userMessage = { role: 'user', content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
-
+  
     const botResponse = await callFlowiseAPI(input);
     const botMessage = { role: 'assistant', content: botResponse };
     setMessages((prev) => [...prev, botMessage]);
   };
-
+  
   const handleOptionClick = async (option) => {
+    console.log('Handling option click:', option);
     const options = {
       '1': { query: 'Who is Masafumi Nozawa?', display: 'Who is Masafumi Nozawa?' },
       '2': { query: 'What are his services? List his services from 1 - 5', display: 'What are his services?' },
@@ -121,10 +123,10 @@ const App = () => {
     };
     const selectedOption = options[option];
     if (!selectedOption) return;
-
+  
     const userMessage = { role: 'user', content: selectedOption.display };
     setMessages((prev) => [...prev, userMessage]);
-
+  
     const botResponse = await callFlowiseAPI(selectedOption.query);
     const botMessage = { role: 'assistant', content: botResponse };
     setMessages((prev) => [...prev, botMessage]);
