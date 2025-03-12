@@ -1,4 +1,4 @@
-// pages/App.js
+// app/page.js
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -37,7 +37,7 @@ const App = () => {
       listHtml += '</ol>';
       formatted = formatted.replace(numberedListRegex, listHtml);
     }
-    const bulletListRegex = /(-\s[^\n]+)/g;
+    const bulletListRegex = /(-\s[^\n]+)/g);
     const bulletItems = formatted.match(bulletListRegex);
     if (bulletItems) {
       let listHtml = '<ul>';
@@ -55,11 +55,11 @@ const App = () => {
   const callFlowiseAPI = async (userInput) => {
     setIsLoading(true);
     const startTime = Date.now();
-  
+
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://fumi-nozawa-bot-gen.vercel.app/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec';
       console.log('Calling API at:', apiUrl);
-  
+
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -67,29 +67,29 @@ const App = () => {
         },
         body: JSON.stringify({ question: userInput }),
       });
-  
+
       const textResponse = await response.text();
       console.log('Raw API Response:', textResponse);
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error ${response.status}: ${textResponse || 'Unknown error'}`);
       }
-  
+
       let data;
       try {
         data = JSON.parse(textResponse);
       } catch {
         throw new Error(`Non-JSON response: ${textResponse.slice(0, 100)}...`);
       }
-  
+
       const rawResponse = data.text || data.message || 'Sorry, I couldn’t process that.';
       const elapsedTime = Date.now() - startTime;
       const minLoadingTime = 1000;
-  
+
       if (elapsedTime < minLoadingTime) {
         await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
       }
-  
+
       return formatResponse(rawResponse);
     } catch (error) {
       console.error('Error calling Flowise API:', error.message);
@@ -98,23 +98,21 @@ const App = () => {
       setIsLoading(false);
     }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Handling submit with input:', input);
     if (!input.trim()) return;
-  
+
     const userMessage = { role: 'user', content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
-  
+
     const botResponse = await callFlowiseAPI(input);
     const botMessage = { role: 'assistant', content: botResponse };
     setMessages((prev) => [...prev, botMessage]);
   };
-  
+
   const handleOptionClick = async (option) => {
-    console.log('Handling option click:', option);
     const options = {
       '1': { query: 'Who is Masafumi Nozawa?', display: 'Who is Masafumi Nozawa?' },
       '2': { query: 'What are his services? List his services from 1 - 5', display: 'What are his services?' },
@@ -123,10 +121,10 @@ const App = () => {
     };
     const selectedOption = options[option];
     if (!selectedOption) return;
-  
+
     const userMessage = { role: 'user', content: selectedOption.display };
     setMessages((prev) => [...prev, userMessage]);
-  
+
     const botResponse = await callFlowiseAPI(selectedOption.query);
     const botMessage = { role: 'assistant', content: botResponse };
     setMessages((prev) => [...prev, botMessage]);
