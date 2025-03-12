@@ -1,296 +1,306 @@
-/* pages/Chat.module.css */
+/* app/Chat.module.css */
 .chatContainer {
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Full viewport height */
-    width: 100vw; /* Explicit full width */
-    background-color: #ffffff;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    position: relative; /* Ensure container doesn’t interfere */
-  }
-  
-  .header {
-    position: fixed; /* Stick to top */
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%; /* Force full width */
-    background-color: #ffffff;
-    padding: 10px 20px;
-    border-bottom: 1px solid #d1d1d1;
-    z-index: 1000; /* Higher z-index to ensure it’s on top */
-  }
-  
-  .header h1 {
-    margin: 0;
-    font-size: 20px;
-    color: #000000;
-  }
-  
-  .chatWindow {
-    flex: 1; /* Fills space between header and input */
-    overflow-y: auto; /* Scrollable */
-    padding: 50px 20px 60px; /* Adjusted for header/input heights */
-    background-color: #fafafa;
-    color: #000000;
-  }
-  
-  /* Fade-in animation for all messages */
-  .welcomeMessage,
-  .botMessage,
-  .userMessage {
-    animation: fadeIn 0.3s ease-in;
-  }
-  
-  /* Keyframes for fade-in animation */
-  @keyframes fadeIn {
-    from {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Explicit full width */
+  background-color: #ffffff;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  position: relative; /* Ensure container doesn’t interfere */
+}
+
+.header {
+  position: fixed; /* Stick to top */
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%; /* Force full width */
+  background-color: #ffffff;
+  padding: 10px 20px;
+  border-bottom: 1px solid #d1d1d1;
+  z-index: 1000; /* Higher z-index to ensure it’s on top */
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 20px;
+  color: #000000;
+}
+
+.chatWindow {
+  flex: 1; /* Fills space between header and input */
+  overflow-y: auto; /* Scrollable */
+  padding: 50px 20px 60px; /* Adjusted for header/input heights */
+  background-color: #fafafa;
+  color: #000000;
+}
+
+/* Fade-in animation for all messages */
+.welcomeMessage,
+.botMessage,
+.userMessage {
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Keyframes for fade-in animation */
+@keyframes fadeIn {
+  from {
       opacity: 0;
       transform: translateY(10px);
-    }
-    to {
+  }
+  to {
       opacity: 1;
       transform: translateY(0);
-    }
   }
-  
-  .welcomeMessage {
-    background-color: #2ecc71;
-    color: #000000;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    max-width: 100%;
-    width: 100%;
-    align-self: flex-start;
-    box-sizing: border-box;
-  }
-  
-  .welcomeMessage ul,
-  .welcomeMessage ol {
-    margin: 5px 0;
-    padding-left: 20px;
-  }
-  
-  .welcomeMessage li {
-    margin-bottom: 5px;
-  }
-  
-  .welcomeMessage strong {
-    font-weight: 600;
-  }
-  
-  .botMessage {
-    background-color: rgba(220, 220, 220, 0.3);
-    color: #000000;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    max-width: 100%;
-    width: 100%;
-    align-self: flex-start;
-    box-sizing: border-box;
-  }
-  
-  .botMessage ul,
-  .botMessage ol {
-    margin: 5px 0;
-    padding-left: 20px;
-  }
-  
-  .botMessage li {
-    margin-bottom: 5px;
-  }
-  
-  .botMessage strong {
-    font-weight: 600;
-  }
-  
-  .welcome-text {
-    margin-bottom: 10px;
-  }
-  
-  .options-list {
-    margin-bottom: 15px;
-  }
-  
-  .messageContent {
-    margin-bottom: 10px;
-  }
-  
-  .userMessage {
-    background-color: rgba(255, 255, 255, 0.3);
-    color: #000000;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    max-width: 70%;
-    margin-left: 45%;
-    box-sizing: border-box;
-  }
-  
-  .options {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 10px;
-    overflow-x: auto;
-    padding-bottom: 10px;
-  }
-  
-  .options button {
-    background-color: #27ae60;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #000000;
-    white-space: nowrap;
-  }
-  
-  .options button:hover {
-    background-color: #219653;
-  }
-  
-  .inputForm {
-    position: fixed; /* Stick to bottom */
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%; /* Force full width */
-    display: flex;
-    padding: 10px;
-    background-color: #ffffff;
-    border-top: 1px solid #d1d1d1;
-    z-index: 1000; /* Higher z-index to ensure it’s on top */
-  }
-  
-  .input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #d1d1d1;
-    border-radius: 8px;
-    font-size: 16px;
-    outline: none;
-  }
-  
-  .sendButton {
-    background-color: #000000;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    margin-left: 10px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .sendButton:hover {
-    background-color: #333333;
-  }
-  
-  /* Loading message styles */
-  .loadingMessage {
-    background-color: rgba(220, 220, 220, 0.3);
-    color: #000000;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    max-width: 100%;
-    width: 100%;
-    align-self: flex-start;
-    box-sizing: border-box;
-    animation: fadeIn 0.3s ease-in;
-  }
-  
-  /* Bouncing dots animation */
-  .loadingDots {
-    display: flex;
-    gap: 5px;
-    justify-content: flex-start;
-    align-items: center;
-    height: 20px;
-  }
-  
-  .loadingDots span {
-    display: inline-block;
-    width: 4px;
-    height: 4px;
-    background-color: #000000;
-    border-radius: 50%;
-    animation: bounce 1.2s infinite;
-  }
-  
-  .loadingDots span:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  
-  .loadingDots span:nth-child(3) {
-    animation-delay: 0.4s;
-  }
-  
-  @keyframes bounce {
-    0%, 100% {
+}
+
+.welcomeMessage {
+  background-color: #2ecc71;
+  color: #000000;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  max-width: 100%;
+  width: 100%;
+  align-self: flex-start;
+  box-sizing: border-box;
+}
+
+.welcomeMessage ul,
+.welcomeMessage ol {
+  margin: 5px 0;
+  padding-left: 20px;
+}
+
+.welcomeMessage li {
+  margin-bottom: 5px;
+}
+
+.welcomeMessage strong {
+  font-weight: 600;
+}
+
+.botMessage {
+  background-color: rgba(220, 220, 220, 0.3);
+  color: #000000;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  max-width: 100%;
+  width: 100%;
+  align-self: flex-start;
+  box-sizing: border-box;
+}
+
+.botMessage ul,
+.botMessage ol {
+  margin: 5px 0;
+  padding-left: 20px;
+}
+
+.botMessage li {
+  margin-bottom: 5px;
+}
+
+.botMessage strong {
+  font-weight: 600;
+}
+
+.welcome-text {
+  margin-bottom: 10px;
+}
+
+.options-list {
+  margin-bottom: 15px;
+}
+
+.messageContent {
+  margin-bottom: 10px;
+}
+
+.userMessage {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #000000;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  max-width: 70%;
+  margin-left: 45%;
+  box-sizing: border-box;
+}
+
+.options {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.options button {
+  background-color: #27ae60;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.options button:hover {
+  background-color: #219653;
+}
+
+.inputForm {
+  position: fixed; /* Stick to bottom */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%; /* Force full width */
+  display: flex;
+  padding: 10px;
+  background-color: #ffffff;
+  border-top: 1px solid #d1d1d1;
+  z-index: 1000; /* Higher z-index to ensure it’s on top */
+}
+
+.input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+.input:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+.sendButton {
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.sendButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.sendButton:hover:not(:disabled) {
+  background-color: #333333;
+}
+
+/* Loading message styles */
+.loadingMessage {
+  background-color: rgba(220, 220, 220, 0.3);
+  color: #000000;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  max-width: 100%;
+  width: 100%;
+  align-self: flex-start;
+  box-sizing: border-box;
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Bouncing dots animation */
+.loadingDots {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  height: 20px;
+}
+
+.loadingDots span {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background-color: #000000;
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+}
+
+.loadingDots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loadingDots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 100% {
       transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
   }
-  
-  /* Mobile responsiveness */
-  @media (max-width: 768px) {
-    .chatWindow {
+  50% {
+      transform: translateY(-10px);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .chatWindow {
       padding: 50px 10px 60px; /* Adjusted for mobile */
-    }
-  
-    .welcomeMessage {
+  }
+
+  .welcomeMessage {
       padding: 8px 12px;
-    }
-  
-    .botMessage {
+  }
+
+  .botMessage {
       padding: 8px 12px;
       font-size: 14px;
-    }
-  
-    .userMessage {
+  }
+
+  .userMessage {
       padding: 8px 12px;
       max-width: 85%;
       font-size: 14px;
-    }
-  
-    .options {
+  }
+
+  .options {
       flex-direction: column;
       flex-wrap: wrap;
       overflow-x: visible;
       gap: 8px;
-    }
-  
-    .options button {
+  }
+
+  .options button {
       width: 100%;
       text-align: left;
       padding: 10px 15px;
       font-size: 16px;
-    }
-  
-    .inputForm {
+  }
+
+  .inputForm {
       padding: 8px;
       flex-direction: column;
       gap: 8px;
-    }
-  
-    .input {
+  }
+
+  .input {
       width: 100%;
       font-size: 14px;
       padding: 8px;
-    }
-  
-    .sendButton {
+  }
+
+  .sendButton {
       width: 100%;
       padding: 10px;
       margin-left: 0;
       font-size: 16px;
-    }
   }
+}
