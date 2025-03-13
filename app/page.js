@@ -52,7 +52,7 @@ const App = () => {
 
     try {
       const apiUrl = 'https://flowise-688733622589.us-east1.run.app/api/v1/prediction/b01ef746-e7cd-4c13-a10b-5eb0ed925dec';
-      const apiKey = 'f59FhjV6eVWqMG8wTWvc5UdHYPpSlwVFyLBsgMrUIZw';
+      const apiKey = 'i1NtSBf6U4DwEMU6Cq_TLB5XwWbvvwm4enRt_msbkWI';
 
       console.log('Sending to:', apiUrl);
       console.log('With API Key:', apiKey);
