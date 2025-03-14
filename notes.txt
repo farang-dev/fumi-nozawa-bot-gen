@@ -1,0 +1,19 @@
+## Next.js Metadata
+
+### Setting Page Title and Meta Description
+
+In Next.js (using the app router), you can set the page title and meta description using the `metadata` export in your `layout.js` file.
+
+**Example:**
+
+```javascript
+// app/layout.js
+export const metadata = {
+  title: "Your Page Title",
+  description: "Your page description.",
+};
+```
+
+**Reference:**
+
+[Next.js Metadata Documentation](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#the-metadata-object)

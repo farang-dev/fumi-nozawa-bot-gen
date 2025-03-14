@@ -15,7 +15,7 @@ const App = () => {
       role: 'assistant',
       content: `
         <div class="welcome-text"><strong>Hey there! 👋 I’m Masafumi Nozawa.</strong><br><br>
-      Welcome! Feel free to explore and ask away. Whether it’s web development, marketing, or my creative journey, I’m here to chat.</div>
+      Welcome! Feel free to explore and ask away. Whether it’s digital marketing, web development, or my creative journey(even my hobbies), I’m here to chat.</div>
       `,
     };
     setMessages([welcomeMessage]);
