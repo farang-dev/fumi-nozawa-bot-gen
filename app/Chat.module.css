@@ -131,12 +131,11 @@
 }
 
 .options {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
   gap: 10px;
-  overflow-x: auto;
   padding-bottom: 10px;
+  width: 100%;
 }
 
 .options button {
@@ -147,7 +146,7 @@
   cursor: pointer;
   font-size: 14px;
   color: #000000;
-  white-space: nowrap;
+  text-align: center;
 }
 
 .options button:hover {
@@ -272,9 +271,8 @@
   }
 
   .options {
+      display: flex;
       flex-direction: column;
-      flex-wrap: wrap;
-      overflow-x: visible;
       gap: 8px;
   }
 
