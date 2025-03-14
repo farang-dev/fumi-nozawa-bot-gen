@@ -119,7 +119,7 @@ const App = () => {
       '1': { query: 'Who is Masafumi Nozawa?', display: 'Who is Masafumi Nozawa?' },
       '2': { query: 'What are his services?', display: 'What are his services?' },
       '3': { query: 'What is his skillset?', display: 'What is his skillset?' },
-      '4': { query: 'What is his career journey?', display: 'What is his career journey?' },
+      '4': { query: 'Show me his work samples', display: 'Show me some of his work samples' },
       '5': { query: 'Where and what did he study?', display: 'Where and what did he study?' },
       '6': { query: 'What are his professional interests?', display: 'What are his professional interests?' },
       '7': { query: 'What is his Boiler Room favorite? (DJ set)', display: 'What is his Boiler Room favorite? (DJ set)' },
@@ -150,7 +150,7 @@ const App = () => {
                 <button onClick={() => handleOptionClick('1')}>1. Who is Masafumi Nozawa?</button>
                 <button onClick={() => handleOptionClick('2')}>2. What are his services?</button>
                 <button onClick={() => handleOptionClick('3')}>3. What is his skillset?</button>
-                <button onClick={() => handleOptionClick('4')}>4. What is his career journey?</button>
+                <button onClick={() => handleOptionClick('4')}>4. Show me some work samples</button>
                 <button onClick={() => handleOptionClick('5')}>5. Where and what did he study?</button>
                 <button onClick={() => handleOptionClick('6')}>6. What are his professional interests?</button>
                 <button onClick={() => handleOptionClick('7')}>7. What is his Boiler Room favorite? (DJ set)</button>
