@@ -17,3 +17,4 @@ export const metadata = {
 **Reference:**
 
 [Next.js Metadata Documentation](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#the-metadata-object)
+
